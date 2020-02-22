@@ -5,6 +5,8 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include "moon_phase.h"
 
@@ -12,43 +14,64 @@
 // Returns NULL on error
 FILE *get_json(void)
 {
-	//char curl_command[] = "curl wttr.in/?format=j1";
-	//char curl_type[] = "r";
 	FILE *f;
+	int c = 0;
 
-//	printf("%s", curl_command);
-	f = popen("curl 'wttr.in/?format=j1'", "r");
+	f = popen("curl wttr.in/?format=j1", "r");
 
+	// Give curl a second to get the whole URL
+	sleep(1);
+
+	// Check for errors
 	if (f == NULL) {
 		fprintf(stderr, "Could not open URL\n");
 		return NULL;
 	}
 
+	printf("\n");
+
+	/*
+	do {
+		c = fgetc(f);
+		if (feof(f)) break;
+		printf("%c", c);
+	} while(1);*/
+
+	//rewind(f);
+
 	return f;
-}
+}	
 
-// Gets size of the JSON file found by get_json()
-// Returns -1 on error, file size on success
-long int get_size(FILE *f)
+int print_phase(FILE *f)
 {
-	long int file_size = 0;
-	int err = 0;
+	char *str = NULL, *out = NULL;
+	char *err;
+	int i = 0;
 
-	if (f == NULL) {
-		fprintf(stderr, "Invalid file pointer\n");
-		return -1;
-	}
-	
-	// Find the end of the file, then check for errors
-	err = fseek(f, 0, SEEK_END);
-	if (err < 0) {
-		fprintf(stderr, "Could not get file size");
-		return -1;
-	}
+	str = (char *)malloc(SIZE_MOON_PHASE);
 
-	// Get size of the file, then reset file pointer
-	file_size = ftell(f);
-	rewind(f);
+	do {
+		err = fgets(str, SIZE_MOON_PHASE, f);
+		if (err == NULL) {
+			fprintf(stderr, "Error or End-of-File reached\n");
+			return -1;
+		}
+		//printf("%s", str);
+		out = strstr(str, "moon_phase");
+		if (out != NULL) {
+			while (*out != '\n') {
+				printf("%c", *out);
+				out++;
+			}
 
-	return file_size;
+			printf("\n");
+			break;
+		}
+	} while(1);
+
+	free(str);
+
+	pclose(f);
+
+	return 0;
 }

@@ -11,23 +11,10 @@
 int main(int argc, char *argv[])
 {
 	FILE *f;
-	int c = 0; 
-	long int size = 0;
-	//long int size = 0;
+	int err;
 
-	//f = get_json();
-	//size = get_size(f);
-	f = popen("curl wttr.in/?format=j1", "r");
-	sleep(3);
+	f = get_json();
+	err = print_phase(f);
 
-	printf("\n");
-	
-	do {
-		c = fgetc(f);
-		if(feof(f)) break;
-		printf("%c", c);
-	} while(1);
-
-	pclose(f);
 	return 0;
 }

@@ -1,7 +1,9 @@
 #ifndef MOON_PHASE_H
 #define MOON_PHASE_H
 
+#define SIZE_MOON_PHASE 20
+
 FILE *get_json(void);
-long int get_size(FILE *f);
+int print_phase(FILE *f);
 
 #endif
