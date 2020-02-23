@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 	int err;
 
 	f = get_json();
-	err = print_phase(f);
+	err = find_phase(f);
 
 	return 0;
 }
