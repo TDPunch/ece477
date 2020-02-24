@@ -8,5 +8,8 @@
 FILE *get_json(void);
 int find_phase(FILE *f);
 void print_phase(char *str);
+int something_cool(FILE *f);
+void print_options(char *str);
+int print_answer(char *str, FILE *f);
 
 #endif

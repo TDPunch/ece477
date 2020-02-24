@@ -13,8 +13,28 @@ int main(int argc, char *argv[])
 	FILE *f;
 	int err;
 
+//	Part A
+//	f = get_json();
+//	err = find_phase(f);
+
+//  Part B	
 	f = get_json();
-	err = find_phase(f);
+	err = something_cool(f);
+
+	if (err < 0) {
+		fprintf(stderr, "Error in something_cool()");
+		return -1;
+	}
+
+	f = get_json();
+
+	if (argc == 2) {
+		err = print_answer(argv[1], f);
+		if (err < 0) {
+			fprintf(stderr, "Error in print_answer");
+			return -1;
+		}
+	}
 
 	return 0;
 }
