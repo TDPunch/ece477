@@ -4,14 +4,27 @@
  */
 
 #include <stdio.h>
+#include "gpio.h"
+
 int main(int argc, char *argv[])
 {
-	char *ptr, *ptr1;
+	int err = 0;
 
-	ptr = "18";
-	ptr1 = "2";
+	err = export_gpio("17");
+	if (err < 0) {
+		fprintf(stderr, "Error in export_gpio()\n");
+		return -1;
+	}
 
+	err = set_direction("17", "out");
+	if (err < 0) {
+		fprintf(stderr, "Error in set_direction()\n");
+		return -1;
+	}
 
-	printf("%d\n", sizeof(ptr));
-	printf("%c\n", *(ptr1+1));
+	err = set_gpio_low("17");
+	if (err < 0) {
+		fprintf(stderr, "Error in set_gpio_low()\n");
+		return -1;
+	}
 }
