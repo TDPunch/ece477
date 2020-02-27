@@ -1,5 +1,5 @@
-TARGET=lab2
-OBJS=main.o moon_phase.o
+TARGET=lab3
+OBJS=main.o .o
 CFLAGS=-g -Wall
 
 $(TARGET):$(OBJS)
