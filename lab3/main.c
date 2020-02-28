@@ -8,23 +8,38 @@
 
 int main(int argc, char *argv[])
 {
-	int err = 0;
+	int check = 0, err = 0;
 
-	err = export_gpio("17");
-	if (err < 0) {
-		fprintf(stderr, "Error in export_gpio()\n");
-		return -1;
+	char arr[16] = {'0', '\0', '1', '\0', '2', '\0', '3', '\0',
+					'4', '\0', '5', '\0', '6', '\0', '7', '\0'};
+	char *gpio_arr[8];
+
+	for(int i = 0; i < 8; i++) {
+		gpio_arr[i] = arr + 2*i;
+		printf("%s\n", gpio_arr[i]);
 	}
 
-	err = set_direction("17", "out");
-	if (err < 0) {
-		fprintf(stderr, "Error in set_direction()\n");
-		return -1;
+	for(int i = 0; i < 8; i++) {
+		check = check_export(gpio_arr[i]);
+		if (check < 0) {
+			err = export_gpio(gpio_arr[i]);
+		}
 	}
 
-	err = set_gpio_low("17");
-	if (err < 0) {
-		fprintf(stderr, "Error in set_gpio_low()\n");
-		return -1;
-	}
+	//export_all();
+
+	/*
+	for (int i = 0; i < 8; i++) {
+		err = set_direction(gpio_arr[i], "out");
+		if (err < 0) {
+			fprintf(stderr, "Error setting GPIO%s as output\n", gpio_arr[i]);
+			continue;
+		}
+
+		err = set_gpio_low(gpio_arr[i]);
+		if (err < 0) {
+			fprintf(stderr, "Error initializing GPIO%s to low\n", gpio_arr[i]);
+			continue;
+		}
+	}*/
 }

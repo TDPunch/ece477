@@ -1,5 +1,5 @@
 TARGET=lab3
-OBJS=main.o gpio.o
+OBJS=main.o gpio.o partA.o
 CFLAGS=-g -Wall
 
 $(TARGET):$(OBJS)
