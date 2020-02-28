@@ -26,9 +26,6 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	//export_all();
-
-	/*
 	for (int i = 0; i < 8; i++) {
 		err = set_direction(gpio_arr[i], "out");
 		if (err < 0) {
@@ -36,10 +33,10 @@ int main(int argc, char *argv[])
 			continue;
 		}
 
-		err = set_gpio_low(gpio_arr[i]);
+		err = set_gpio_high(gpio_arr[i]);
 		if (err < 0) {
 			fprintf(stderr, "Error initializing GPIO%s to low\n", gpio_arr[i]);
 			continue;
 		}
-	}*/
+	}
 }

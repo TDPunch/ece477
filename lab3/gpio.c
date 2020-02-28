@@ -17,7 +17,8 @@
 
 int export_gpio(char * pin)
 {
-	int fd = 0, err = 0;
+	int fd = 0, err = 0, count = 0;
+	char buf[2];
 
 	fd = open("/sys/class/gpio/export", O_WRONLY);
 	if (fd < 0) {
@@ -26,8 +27,10 @@ int export_gpio(char * pin)
 	}
 
 	sleep(2);
-	
-	err = write(fd, pin, 2);
+
+	count = sprintf(buf, "%s\n", pin);
+
+	err = write(fd, buf, count);
 	if (err < 0) {
 		fprintf(stderr, "Error writing to exp\n");
 		return -1;
@@ -52,7 +55,6 @@ int set_direction(char * pin, char *IO)
 	strcat(filename, pin);
 	strcat(filename, direction);
 
-	printf("%s\n", filename);
 	fd = open(filename, O_WRONLY);
 	if (fd < 0) {
 		fprintf(stderr, "Error opening 'direction' file\n");
@@ -149,7 +151,6 @@ int check_export(char * pin)
 	strcat(filename, pin);
 	strcat(filename, value);
 
-	printf("%s\n", filename);
 	fd = open(filename, O_WRONLY);
 	free(filename);
 
@@ -158,59 +159,4 @@ int check_export(char * pin)
 		close(fd);
 		return 0;
 	}
-}
-
-void export_all(void)
-{
-	int check = 0, err;
-	char *gpio_0 = "0", *gpio_1 = "1", *gpio_2 = "2", *gpio_3 = "3";
-	char *gpio_4 = "4", *gpio_5 = "5", *gpio_6 = "6", *gpio_7 = "7";
-
-	check = check_export(gpio_0);
-	if (check < 0) {
-		err = export_gpio(gpio_0);
-	}
-
-	check = check_export(gpio_1);
-	if (check < 0) {
-		err = export_gpio(gpio_1);
-	}
-
-	check = check_export(gpio_2);
-	if (check < 0) {
-		err = export_gpio(gpio_2);
-	}
-
-	check = check_export(gpio_3);
-	if (check < 0) {
-		err = export_gpio(gpio_3);
-	}
-
-	check = check_export(gpio_4);
-	if (check < 0) {
-		err = export_gpio(gpio_4);
-	}
-
-	check = check_export(gpio_5);
-	if (check < 0) {
-		err = export_gpio(gpio_5);
-	}
-
-	check = check_export(gpio_6);
-	if (check < 0) {
-		err = export_gpio(gpio_6);
-	}
-
-	check = check_export(gpio_7);
-	if (check < 0) {
-		err = export_gpio(gpio_7);
-	}
-}
-
-void direction_all(void)
-{
-	char *gpio_0 = "0", *gpio_1 = "1", *gpio_2 = "2", *gpio_3 = "3";
-	char *gpio_4 = "4", *gpio_5 = "5", *gpio_6 = "6", *gpio_7 = "7";
-
-	
 }
