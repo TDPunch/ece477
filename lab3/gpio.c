@@ -26,11 +26,11 @@ int export_gpio(char * pin)
 		return -1;
 	}
 
-	sleep(2);
-
+	sleep(1);
 	count = sprintf(buf, "%s\n", pin);
 
 	err = write(fd, buf, count);
+	sleep(1);
 	if (err < 0) {
 		fprintf(stderr, "Error writing to exp\n");
 		return -1;
@@ -58,12 +58,14 @@ int set_direction(char * pin, char *IO)
 	fd = open(filename, O_WRONLY);
 	if (fd < 0) {
 		fprintf(stderr, "Error opening 'direction' file\n");
+		free(filename);
 		return -1;
 	}
 
 	err = write(fd, IO, strlen(IO));
 	if (err < 0) {
 		fprintf(stderr, "Error writing to dir\n");
+		free(filename);
 		return -1;
 	}
 
@@ -90,12 +92,14 @@ int set_gpio_high(char * pin)
 	fd = open(filename, O_WRONLY);
 	if (fd < 0) {
 		fprintf(stderr, "Error opening 'value' file\n");
+		free(filename);
 		return -1;
 	}
 
 	err = write(fd, "1", 1);
 	if (err < 0) {
 		fprintf(stderr, "Error writing to file\n");
+		free(filename);
 		return -1;
 	}
 
@@ -122,12 +126,14 @@ int set_gpio_low(char * pin)
 	fd = open(filename, O_WRONLY);
 	if (fd < 0) {
 		fprintf(stderr, "Error opening 'value' file\n");
+		free(filename);
 		return -1;
 	}
 
 	err = write(fd, "0", 1);
 	if (err < 0) {
 		fprintf(stderr, "Error writing to file\n");
+		free(filename);
 		return -1;
 	}
 
@@ -139,7 +145,7 @@ int set_gpio_low(char * pin)
 
 int check_export(char * pin)
 {
-	int fd = 0, err = 0;
+	int fd = 0;
 	char *gpio_dir = "/sys/class/gpio/gpio";
 	char *value = "/value";
 	char *filename;
