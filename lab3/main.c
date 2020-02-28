@@ -7,10 +7,11 @@
 #include <unistd.h>
 #include "gpio.h"
 #include "partA.h"
+#include "partB.h"
 
 int main(int argc, char *argv[])
 {
-	float load_avg = 0.0;
+	float load_avg = 0.0, prev_load_avg = 0.0;
 	char arr[16] = {'0', '\0', '1', '\0', '2', '\0', '3', '\0',
 					'4', '\0', '5', '\0', '6', '\0', '7', '\0'};
 	char *gpio_arr[8];
@@ -27,8 +28,19 @@ int main(int argc, char *argv[])
 	// and update LEDs
 	while(1) {
 		sleep(5);
+		
+		if (prev_load_avg < load_avg) {
+			ascending(gpio_arr);
+		}
+		else if (load_avg > prev_load_avg) {
+			descending(gpio_arr);
+		}
+		else {
+			thermometer_code(load_avg, gpio_arr);
+		}
+		
 		load_avg = get_load_average();
 		printf("load %f\n", load_avg);
-		thermometer_code(load_avg, gpio_arr);
+		prev_load_avg = load_avg;
 	}
 }
